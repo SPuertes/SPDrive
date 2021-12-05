@@ -20,7 +20,7 @@ SPDrive
 and `DVC project - PyDrive2 <https://github.com/iterative/PyDrive2>`_
 that simplifies many common Google Drive API V2 tasks. It is an actively
 modified fork of `https://pypi.org/project/PyDrive2/ <https://github.com/iterative/PyDrive2>`_.
-Custom project by the author and maintainer @SPuertes.
+Custom project by the author and maintainer Salvador Puertes.
 
 Project Info
 ------------

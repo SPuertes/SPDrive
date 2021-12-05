@@ -4,6 +4,7 @@ import httplib2
 import oauth2client.clientsecrets as clientsecrets
 from six.moves import input
 import threading
+import json
 
 from googleapiclient.discovery import build
 from functools import wraps
@@ -19,6 +20,7 @@ from oauth2client._helpers import scopes_to_string
 from .apiattr import ApiAttribute
 from .apiattr import ApiAttributeMixin
 from .settings import LoadSettingsFile
+from .settings import UpdateClientSettingsFile
 from .settings import ValidateSettings
 from .settings import SettingsError
 from .settings import InvalidConfigError
@@ -170,7 +172,7 @@ class GoogleAuth(ApiAttributeMixin, object):
     service = ApiAttribute("service")
     auth_method = ApiAttribute("auth_method")
 
-    def __init__(self, settings_file="settings.yaml", http_timeout=None):
+    def __init__(self, settings_file="settings.yml", http_timeout=None):
         """Create an instance of GoogleAuth.
 
     This constructor just sets the path of settings file.
@@ -601,6 +603,10 @@ class GoogleAuth(ApiAttributeMixin, object):
             self.GetFlow()
         try:
             self.credentials = self.flow.step2_exchange(code)
+
+            json_credentials = json.loads(self.credentials.to_json())
+            UpdateClientSettingsFile(json_credentials['client_id'],json_credentials['client_secret'])
+
         except FlowExchangeError as e:
             raise AuthenticationError("OAuth2 code exchange failed: %s" % e)
         print("Authentication successful.")

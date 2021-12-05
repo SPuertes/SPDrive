@@ -1,4 +1,5 @@
 from yaml import load
+from yaml import dump
 from yaml import YAMLError
 
 try:
@@ -6,7 +7,7 @@ try:
 except ImportError:
     from yaml import Loader
 
-SETTINGS_FILE = "settings.yaml"
+SETTINGS_FILE = "settings.yml"
 SETTINGS_STRUCT = {
     "client_config_backend": {
         "type": str,
@@ -105,10 +106,29 @@ def LoadSettingsFile(filename=SETTINGS_FILE):
     try:
         with open(filename, "r") as stream:
             data = load(stream, Loader=Loader)
+            if data["client_config"]["client_id"] == None or data["client_config"]["client_id"].strip() == "" or data["client_config"]["client_secret"] == None or data["client_config"]["client_secret"].strip() == "":
+                raise InvalidConfigError("client_id or client_secret is empty")
     except (YAMLError, IOError) as e:
+        open(filename, 'a+')
         raise SettingsError(e)
     return data
 
+def UpdateClientSettingsFile(client_id,client_secret,filename=SETTINGS_FILE):
+    """Loads settings file in yaml format given file name.
+
+    :param filename: path for settings file. 'settings.yml' by default.
+    :type filename: str.
+    :raises: SettingsError
+    """
+    try:
+        stream = open(filename, 'r')
+        data = load(stream, Loader=Loader)
+        data["client_config"]["client_id"] = client_id
+        data["client_config"]["client_secret"] = client_secret
+        dump(data, open(filename, 'w'))
+    except (YAMLError, IOError) as e:
+        raise SettingsError(e)
+    return data
 
 def ValidateSettings(data):
     """Validates if current settings is valid.

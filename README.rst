@@ -12,15 +12,15 @@
    :target: https://pypi.org/project/PyDrive2
    :alt: PyPI
 
-PyDrive2
+SPDrive
 --------
 
-*PyDrive2* is a wrapper library of
+*SPDrive* is a wrapper library of
 `google-api-python-client <https://github.com/google/google-api-python-client>`_
+and `DVC project - PyDrive2 <https://github.com/iterative/PyDrive2>`_
 that simplifies many common Google Drive API V2 tasks. It is an actively
-maintained fork of `https://pypi.python.org/pypi/PyDrive <https://pypi.python.org/pypi/PyDrive>`_.
-By the authors and maintainers of the `Git for Data <https://dvc.org>`_ - DVC
-project.
+modified fork of `https://pypi.org/project/PyDrive2/ <https://github.com/iterative/PyDrive2>`_.
+Custom project by the author and maintainer @SPuertes.
 
 Project Info
 ------------
@@ -31,7 +31,7 @@ Project Info
 - Changelog: `https://github.com/iterative/PyDrive2/releases <https://github.com/iterative/PyDrive2/releases>`_
 - `Running tests </pydrive2/test/README.rst>`_
 
-Features of PyDrive2
+Features of SPDrive (inherit from PyDrive2)
 --------------------
 
 -  Simplifies OAuth2.0 into just few lines with flexible settings.
@@ -43,30 +43,36 @@ Features of PyDrive2
 How to install
 --------------
 
-You can install PyDrive2 with regular ``pip`` command.
+You can install SPDrive with regular ``pip`` command.
 
 ::
 
-    $ pip install PyDrive2
+    $ pip install SPDrive
 
 To install the current development version from GitHub, use:
 
 ::
 
-    $  pip install git+https://github.com/iterative/PyDrive2.git#egg=PyDrive2
+    $  pip install git+https://github.com/SPuertes/SPDrive#egg=SPDrive
 
 OAuth made easy
 ---------------
 
 Download *client\_secrets.json* from Google API Console and OAuth2.0 is
 done in two lines. You can customize behavior of OAuth2 in one settings
-file *settings.yaml*.
+file *settings.yml*.
+
+*client_id* and *client_secret*  could be empty and auto filled after first access.
+And create itself module_credentials.json for user
 
 .. code:: python
 
 
-    from pydrive2.auth import GoogleAuth
-    from pydrive2.drive import GoogleDrive
+    from spdrive.auth import GoogleAuth
+    from spdrive.drive import GoogleDrive
+    from spdrive.settings import LoadSettingsFile
+
+    settings = LoadSettingsFile("settings.yml")
 
     gauth = GoogleAuth()
     gauth.LocalWebserverAuth()
@@ -110,7 +116,7 @@ efficient way.
 File listing pagination made easy
 ---------------------------------
 
-*PyDrive2* handles file listing pagination for you.
+*SPDrive* handles file listing pagination for you.
 
 .. code:: python
 
@@ -129,11 +135,3 @@ Concurrent access made easy
 ---------------------------
 
 All API functions made to be thread-safe.
-
-Contributors
-------------
-
-Thanks to all our contributors!
-
-.. image:: https://contrib.rocks/image?repo=iterative/PyDrive2
-   :target: https://github.com/iterative/PyDrive2/graphs/contributors
